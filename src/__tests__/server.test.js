@@ -10,18 +10,23 @@ describe("GET /cards", () => {
       .get("/cards")
       .expect(200)
       .then(({ body }) => {
-        expect(body.cards).toHaveLength(3);
-        body.cards.forEach((card) => {
-          expect(card).toEqual(
-            expect.objectContaining({
-              id: expect.any(String),
-              title: expect.any(String),
-              sizes: expect.any(Object),
-              basePrice: expect.any(Number),
-              pages: expect.any(Object),
-            })
-          );
-        });
+        expect(JSON.parse(body.cards)).toEqual([
+          {
+            title: "card 1 title",
+            imageUrl: "/front-cover-portrait-1.jpg",
+            card_id: "card001",
+          },
+          {
+            title: "card 2 title",
+            imageUrl: "/front-cover-portrait-2.jpg",
+            card_id: "card002",
+          },
+          {
+            title: "card 3 title",
+            imageUrl: "/front-cover-landscape.jpg",
+            card_id: "card003",
+          },
+        ]);
       });
   });
 });
