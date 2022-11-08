@@ -1,5 +1,5 @@
 const express = require("express");
-const { getCards } = require("./controllers/cards.controllers");
+const { getCards, getCardsById } = require("./controllers/cards.controllers");
 
 const app = express();
 
@@ -7,8 +7,8 @@ app.use(express.json());
 
 app.get("/cards", getCards);
 
-app.get("/cards/:cardId/:sizeId?", () => {
-  // respond with card by id
-});
+app.get("/cards/:cardId", getCardsById);
+
+//app.get("/cards/:cardId/:sizeId?", getCardsById);
 
 module.exports = app;

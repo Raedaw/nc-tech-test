@@ -31,13 +31,48 @@ describe("GET /cards", () => {
   });
 });
 
-// test("returns matching card title", async () => {
-//   const response = await request(app).get("/cards/card001");
-
-//   expect(response.status).toBe(200);
-//   expect(response.body).toEqual(
-//     expect.objectContaining({
-//       title: "card 1 title",
-//     })
-//   );
-// });
+describe("GET /cards/:cardId", () => {
+  test("returns matching card title", () => {
+    return request(app)
+      .get("/cards/card001")
+      .expect(200)
+      .then(({ body }) => {
+        expect(JSON.parse(body.card)).toEqual(
+          expect.objectContaining({
+            title: "card 1 title",
+          })
+        );
+      });
+  });
+  test("returns a single card identified by its id", () => {
+    return request(app)
+      .get("/cards/card003")
+      .expect(200)
+      .then(({ body }) => {
+        expect(JSON.parse(body.card)).toEqual({
+          id: "card003",
+          title: "card 3 title",
+          sizes: ["md", "lg"],
+          basePrice: 200,
+          pages: [
+            {
+              title: "Front Cover",
+              templateId: "template006",
+            },
+            {
+              title: "Inside Top",
+              templateId: "template007",
+            },
+            {
+              title: "Inside Bottom",
+              templateId: "template007",
+            },
+            {
+              title: "Back Cover",
+              templateId: "template008",
+            },
+          ],
+        });
+      });
+  });
+});

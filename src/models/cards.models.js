@@ -11,7 +11,6 @@ exports.selectCards = () => {
     })
   ).then(([cards, templates]) => {
     const cardData = [];
-
     const parsedCards = JSON.parse(cards);
     const parsedTemplates = JSON.parse(templates);
 
@@ -24,8 +23,7 @@ exports.selectCards = () => {
       const matchingTemplate = parsedTemplates.find(
         (template) => template.id === card.pages[0].templateId
       );
-
-      // if no matching template then a default url could be assigned
+      // if no matching template then a default url could be assigned for a placeholder image
 
       cardObj.imageUrl = matchingTemplate.imageUrl;
 
@@ -33,5 +31,18 @@ exports.selectCards = () => {
     });
 
     return JSON.stringify(cardData);
+  });
+};
+
+exports.selectCardsById = (cardId) => {
+  return fs.readFile(`${__dirname}/../data/cards.json`, "utf8").then((data) => {
+    const parsedCards = JSON.parse(data);
+
+    // as above .find() would be more efficient here for a larger amount of data as the loop would break once the matching card has been found, and i would aim to stay consistent in the "real world" but I wanted to demonstrate my ability to use an alternative method
+    const filteredCard = parsedCards.filter((card) => {
+      return card.id === cardId;
+    });
+
+    return JSON.stringify(filteredCard[0]);
   });
 };
