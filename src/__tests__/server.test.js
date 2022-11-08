@@ -76,3 +76,43 @@ describe("GET /cards/:cardId", () => {
       });
   });
 });
+
+describe("POST /cards", () => {
+  test("should allow a user to add a card to the list of overall cards", () => {
+    const newCard = {
+      title: "example title",
+      sizes: ["sm", "md", "gt"],
+      basePrice: 200,
+      pages: [
+        {
+          title: "Front Cover",
+          templateId: "template001",
+        },
+        {
+          title: "Inside Left",
+          templateId: "template002",
+        },
+        {
+          title: "Inside Right",
+          templateId: "template003",
+        },
+        {
+          title: "Back Cover",
+          templateId: "template004",
+        },
+      ],
+    };
+    return request(app)
+      .post("/cards")
+      .send(newCard)
+      .expect(201)
+      .then(({ body }) => {
+        expect(JSON.parse(body.card)).toEqual(
+          expect.objectContaining({
+            title: "example title",
+            id: "card004",
+          })
+        );
+      });
+  });
+});

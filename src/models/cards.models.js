@@ -1,4 +1,5 @@
 const fs = require("fs/promises");
+const idGenerator = require("../utils/utils");
 
 exports.selectCards = () => {
   let files = [
@@ -45,4 +46,24 @@ exports.selectCardsById = (cardId) => {
 
     return JSON.stringify(filteredCard[0]);
   });
+};
+
+exports.insertCards = (newCard) => {
+  return fs
+    .readFile(`${__dirname}/../data/cards.json`, "utf8")
+    .then((data) => {
+      const parsedCards = JSON.parse(data);
+      const id = idGenerator(parsedCards[parsedCards.length - 1].id);
+      newCard.id = id;
+      parsedCards.push(newCard);
+      // fs.writeFile(
+      //   `${__dirname}/../data/newcards.json`,
+      //   `${JSON.stringify(parsedCards)}`
+      // );
+
+      return JSON.stringify(parsedCards[parsedCards.length - 1]);
+    })
+    .catch((err) => {
+      console.log("error: " + err);
+    });
 };
